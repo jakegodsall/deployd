@@ -1,6 +1,11 @@
 package memory
 
-import "jakegodsall/deployd/src/domain"
+import (
+	"errors"
+	"jakegodsall/deployd/src/domain"
+)
+
+var ErrNotFound = errors.New("deployment not found")
 
 type DeploymentRepository struct {
 	deployments []*domain.Deployment
@@ -40,4 +45,14 @@ func (r *DeploymentRepository) FindAllByStatus(status domain.Status) ([]*domain.
 	}
 
 	return res, nil
+}
+
+func (r *DeploymentRepository) FindByApplicationVersion(application string, version uint32) (*domain.Deployment, error) {
+	for _, d := range r.deployments {
+		if d.Application == application && d.Version == version {
+			return d, nil
+		}
+	}
+
+	return nil, ErrNotFound
 }
