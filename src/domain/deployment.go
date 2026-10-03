@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Status string
 
@@ -31,4 +34,14 @@ func NewDeployment(
 		Status:      StatusRunning,
 		StartedAt:   time.Now(),
 	}
+}
+
+func (d Deployment) String() string {
+	return fmt.Sprintf(
+		"%s %s v%d [%s]",
+		d.Application,
+		d.Environment,
+		d.Version,
+		d.Status,
+	)
 }
