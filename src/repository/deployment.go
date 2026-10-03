@@ -1,6 +1,11 @@
 package repository
 
-import "jakegodsall/deployd/src/domain"
+import (
+	"errors"
+	"jakegodsall/deployd/src/domain"
+)
+
+var ErrNotFound = errors.New("deployment not found")
 
 type DeploymentRepository interface {
 	FindAll() ([]*domain.Deployment, error)

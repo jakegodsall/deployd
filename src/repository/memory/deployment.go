@@ -1,11 +1,10 @@
 package memory
 
 import (
-	"errors"
 	"jakegodsall/deployd/src/domain"
+	"jakegodsall/deployd/src/repository"
 )
 
-var ErrNotFound = errors.New("deployment not found")
 
 type DeploymentRepository struct {
 	deployments []*domain.Deployment
@@ -54,5 +53,5 @@ func (r *DeploymentRepository) FindByApplicationVersion(application string, vers
 		}
 	}
 
-	return nil, ErrNotFound
+	return nil, repository.ErrNotFound
 }

@@ -11,12 +11,10 @@ var repo repository.DeploymentRepository
 func main() {
 	repo = memory.NewDeploymentRepository()
 
-	deployments, err := repo.FindAllByApplication("my-app")
+	deployment, err := repo.FindByApplicationVersion("my-app", 2)
 	if err != nil {
 		panic(err)
 	}
 
-	for _, d := range deployments {
-		fmt.Println(d.String())
-	}
+	fmt.Println(deployment.String())
 }
