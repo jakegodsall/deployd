@@ -11,7 +11,7 @@ var repo repository.DeploymentRepository
 func main() {
 	repo = memory.NewDeploymentRepository()
 
-	deployments, err := repo.FindAll()
+	deployments, err := repo.FindAllByApplication("my-app")
 	if err != nil {
 		panic(err)
 	}

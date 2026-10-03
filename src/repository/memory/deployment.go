@@ -18,6 +18,18 @@ func (r *DeploymentRepository) FindAll() ([]*domain.Deployment, error) {
 	return r.deployments, nil
 }
 
+func (r *DeploymentRepository) FindAllByApplication(application string) ([]*domain.Deployment, error) {
+	res := []*domain.Deployment{}
+
+	for _, d := range r.deployments {
+		if d.Application == application {
+			res = append(res, d)
+		}
+	}
+
+	return res, nil
+}
+
 func (r *DeploymentRepository) FindAllByStatus(status domain.Status) ([]*domain.Deployment, error) {
 	res := []*domain.Deployment{}
 
