@@ -3,6 +3,8 @@ package domain
 import (
 	"fmt"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Status string
@@ -14,12 +16,15 @@ const (
 )
 
 type Deployment struct {
-	Application string
-	Environment string
-	Version     uint32
-	Status      Status
-	StartedAt   time.Time
-	FinishedAt  *time.Time
+	ID           uuid.UUID `json:"id"`
+	Application  string    `json:"application"`
+	Environment  string    `json:"environment"`
+	Version      uint32    `json:"version"`
+	Status       Status    `json:"status"`
+	StartedAt    time.Time `json:"started_at"`
+	FinishedAt  *time.Time `json:"finished_at"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 func NewDeployment(
@@ -27,12 +32,17 @@ func NewDeployment(
 	environment string,
 	version     uint32,
 ) *Deployment {
+	now := time.Now()
+
 	return &Deployment{
+		ID:          uuid.New(),
 		Application: application,
 		Environment: environment,
 		Version:     version,
 		Status:      StatusRunning,
-		StartedAt:   time.Now(),
+		StartedAt:   now,
+		CreatedAt:   now,
+		UpdatedAt:   now,
 	}
 }
 

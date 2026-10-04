@@ -19,7 +19,7 @@ func NewDeploymentRepository(db *sql.DB) *DeploymentRepository {
 
 func (r *DeploymentRepository) FindAll() ([]*domain.Deployment, error) {
 	rows, err := r.db.Query(`
-		SELECT application, environment, version, status, started_at, finished_at
+		SELECT id, application, environment, version, status, started_at, finished_at, created_at, updated_at
 		FROM deployments
 	`)
 
@@ -35,12 +35,15 @@ func (r *DeploymentRepository) FindAll() ([]*domain.Deployment, error) {
 		deployment := &domain.Deployment{}
 
 		if err := rows.Scan(
+			&deployment.ID,
 			&deployment.Application,
 			&deployment.Environment,
 			&deployment.Version,
 			&deployment.Status,
 			&deployment.StartedAt,
 			&deployment.FinishedAt,
+			&deployment.CreatedAt,
+			&deployment.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -57,7 +60,7 @@ func (r *DeploymentRepository) FindAll() ([]*domain.Deployment, error) {
 
 func (r *DeploymentRepository) FindAllByApplication(application string) ([]*domain.Deployment, error) {
 	rows, err := r.db.Query(`
-		SELECT application, environment, version, status, started_at, finished_at
+		SELECT id, application, environment, version, status, started_at, finished_at, created_at, updated_at
 		FROM deployments
 		WHERE application = ?
 	`, application)
@@ -74,12 +77,15 @@ func (r *DeploymentRepository) FindAllByApplication(application string) ([]*doma
 		deployment := &domain.Deployment{}
 
 		if err := rows.Scan(
+			&deployment.ID,
 			&deployment.Application,
 			&deployment.Environment,
 			&deployment.Version,
 			&deployment.Status,
 			&deployment.StartedAt,
 			&deployment.FinishedAt,
+			&deployment.CreatedAt,
+			&deployment.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -97,7 +103,7 @@ func (r *DeploymentRepository) FindAllByApplication(application string) ([]*doma
 
 func (r *DeploymentRepository) FindAllByStatus(status domain.Status) ([]*domain.Deployment, error) {
 	rows, err := r.db.Query(`
-        SELECT application, environment, version, status, started_at, finished_at
+        SELECT id, application, environment, version, status, started_at, finished_at, created_at, updated_at
         FROM deployments
         WHERE status = ?
 	`, status)
@@ -114,12 +120,15 @@ func (r *DeploymentRepository) FindAllByStatus(status domain.Status) ([]*domain.
 		deployment := &domain.Deployment{}
 
 		if err := rows.Scan(
+			&deployment.ID,
 			&deployment.Application,
 			&deployment.Environment,
 			&deployment.Version,
 			&deployment.Status,
 			&deployment.StartedAt,
 			&deployment.FinishedAt,
+			&deployment.CreatedAt,
+			&deployment.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -136,7 +145,7 @@ func (r *DeploymentRepository) FindAllByStatus(status domain.Status) ([]*domain.
 
 func (r *DeploymentRepository) FindByApplicationVersion(application string, version uint32) (*domain.Deployment, error) {
 	row := r.db.QueryRow(`
-		SELECT application, environment, version, status, started_at, finished_at
+		SELECT id, application, environment, version, status, started_at, finished_at, created_at, updated_at
 		FROM deployments
 		WHERE application = ? AND version = ?
 	`, application, version)
@@ -144,12 +153,15 @@ func (r *DeploymentRepository) FindByApplicationVersion(application string, vers
 	deployment := &domain.Deployment{}
 
 	if err := row.Scan(
+		&deployment.ID,
 		&deployment.Application,
 		&deployment.Environment,
 		&deployment.Version,
 		&deployment.Status,
 		&deployment.StartedAt,
 		&deployment.FinishedAt,
+		&deployment.CreatedAt,
+		&deployment.UpdatedAt,
 	); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, repository.ErrNotFound
