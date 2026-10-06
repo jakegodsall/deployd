@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.25
+
+  pre_build:
+    commands:
+      - go mod download
+
+  build:
+    commands:
+      - go test ./...
+      - GOOS=linux GOARCH=amd64 go build -o deployd-linux-amd64 ./src/cmd
+      - GOOS=darwin GOARCH=arm64 go build -o deployd-darwin-arm64 ./src/cmd
+
+artifacts:
+  files:
+    - deployd-linux-amd64
+    - deployd-darwin-arm64
